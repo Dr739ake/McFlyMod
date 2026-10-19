@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "mc-flymod",
+  "id": "jns-togglefly",
   "version": "${version}",
   "name": "MC Fly Mod",
   "description": "A minimal Fabric mod that registers a keybind and calls a function.",
@@ -19,9 +19,9 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.16.9",
-    "minecraft": "~1.20.1",
-    "java": ">=17",
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
     "fabric-api": "*"
   }
 }

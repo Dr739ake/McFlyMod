@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/java:1-17-bookworm
+FROM mcr.microsoft.com/devcontainers/java:25
 
 # The base devcontainer image includes an unrelated Yarn apt source that breaks
 # apt updates in this environment. Remove it because this Java/Fabric project does

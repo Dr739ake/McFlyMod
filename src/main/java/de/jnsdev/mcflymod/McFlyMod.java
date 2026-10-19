@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import net.fabricmc.api.ModInitializer;
 
 public final class McFlyMod implements ModInitializer {
-    public static final String MOD_ID = "mc-flymod";
+    public static final String MOD_ID = "jns-togglefly";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     @Override
