@@ -1,55 +1,53 @@
 package de.jnsdev.mcflymod;
 
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.input.Keyboard;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.common.MinecraftForge;
 
-public final class McFlyModClient implements ClientModInitializer {
-    private static final String KEY_CATEGORY = "category.mc-flymod.general";
+@SideOnly(Side.CLIENT)
+public final class McFlyModClient {
+    private static final String KEY_CATEGORY = "key.categories.mc-flymod.general";
     private static final String KEY_ACTION = "key.mc-flymod.call_function";
+    private static final KeyBinding ACTION_KEY_BINDING = new KeyBinding(KEY_ACTION, Keyboard.KEY_V, KEY_CATEGORY);
 
-    private static KeyBinding actionKeyBinding;
-
-    @Override
-    public void onInitializeClient() {
-        actionKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            KEY_ACTION,
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_V,
-            KEY_CATEGORY
-        ));
-
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (actionKeyBinding.wasPressed()) {
-                onActionKeyPressed(client);
+    public static void init() {
+        ClientRegistry.registerKeyBinding(ACTION_KEY_BINDING);
+        MinecraftForge.EVENT_BUS.register(new Object() {
+            @SubscribeEvent
+            public void onClientTick(TickEvent.ClientTickEvent event) {
+                if (event.phase == TickEvent.Phase.END && ACTION_KEY_BINDING.isPressed()) {
+                    onActionKeyPressed();
+                }
             }
         });
     }
 
-    private static void onActionKeyPressed(MinecraftClient client) {
-        if (client.player == null) {
+    private static void onActionKeyPressed() {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.thePlayer == null) {
             return;
         }
 
-        var abilities = client.player.getAbilities();
-        if (!abilities.allowFlying && !client.player.isCreative()) {
-            client.player.sendMessage(Text.literal("Creative fly is not available for this player."), true);
+        if (!mc.thePlayer.capabilities.allowFlying && !mc.thePlayer.capabilities.isCreativeMode) {
+            mc.thePlayer.addChatMessage(new ChatComponentText("Creative fly is not available for this player."));
             McFlyMod.LOGGER.info("Creative fly requested but not allowed");
             return;
         }
 
-        abilities.allowFlying = true;
-        abilities.flying = !abilities.flying;
-        client.player.sendAbilitiesUpdate();
+        mc.thePlayer.capabilities.allowFlying = true;
+        mc.thePlayer.capabilities.isFlying = !mc.thePlayer.capabilities.isFlying;
+        mc.thePlayer.sendPlayerAbilities();
 
-        String state = abilities.flying ? "enabled" : "disabled";
-        client.player.sendMessage(Text.literal("Creative fly " + state + "."), true);
-        McFlyMod.LOGGER.info("Creative fly {} for {}", state, client.player.getEntityName());
+        String state = mc.thePlayer.capabilities.isFlying ? "enabled" : "disabled";
+        mc.thePlayer.addChatMessage(new ChatComponentText("Creative fly " + state + "."));
+        McFlyMod.LOGGER.info("Creative fly {} for {}", state, mc.thePlayer.getCommandSenderName());
     }
 }

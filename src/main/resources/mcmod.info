@@ -1,0 +1,16 @@
+[
+{
+  "modid": "mcflymod",
+  "name": "MC Fly Mod",
+  "description": "A minimal Forge mod that toggles flight with a keybind.",
+  "version": "${version}",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["GitHub Copilot"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

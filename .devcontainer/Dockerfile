@@ -1,15 +1,21 @@
-FROM mcr.microsoft.com/devcontainers/java:1-17-bookworm
+FROM eclipse-temurin:8-jdk-jammy
 
-# The base devcontainer image includes an unrelated Yarn apt source that breaks
-# apt updates in this environment. Remove it because this Java/Fabric project does
-# not require Node or Yarn.
-RUN rm -f /etc/apt/sources.list.d/yarn.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
+# Forge 1.7.10 requires Java 8 and a compatible Gradle toolchain.
+# Create the devcontainer user expected by VS Code and install the minimal
+# toolchain we need for source checkout and build steps.
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         git \
         curl \
         ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+        unzip \
+        procps \
+        sudo \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home --shell /bin/bash vscode \
+    && usermod -aG sudo vscode \
+    && echo 'vscode ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/vscode \
+    && chmod 0440 /etc/sudoers.d/vscode
 
 WORKDIR /workspaces
 
@@ -19,5 +25,5 @@ RUN mkdir -p /home/vscode/.gradle \
 
 USER vscode
 
-# Pre-warm the wrapper by verifying Java and Gradle compatibility.
+# Verify the Java 8 toolchain and Gradle wrapper before starting a Forge build.
 CMD ["bash", "-lc", "java -version && ./gradlew --version"]
