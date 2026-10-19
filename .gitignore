@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Fabric / Minecraft run artifacts
+run/
+classes/
+logs/
+
+# IDE / editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local config
+local.properties
