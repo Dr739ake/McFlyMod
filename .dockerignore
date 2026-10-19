@@ -1,0 +1,9 @@
+# Keep the Docker build context small and avoid copying local build artifacts.
+.git
+.gradle
+.idea
+.vscode
+build/
+**/build/
+.gitignore
+README.md

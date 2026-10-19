@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "package": "de.jnsdev.mcflymod.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

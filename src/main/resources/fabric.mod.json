@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "mc-flymod",
+  "version": "${version}",
+  "name": "MC Fly Mod",
+  "description": "A minimal Fabric mod that registers a keybind and calls a function.",
+  "authors": [
+    "GitHub Copilot"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "de.jnsdev.mcflymod.McFlyMod"
+    ],
+    "client": [
+      "de.jnsdev.mcflymod.McFlyModClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}

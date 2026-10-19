@@ -1,0 +1,27 @@
+{
+  "name": "McFlyMod",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "GRADLE_USER_HOME": "/home/vscode/.gradle"
+  },
+  "postCreateCommand": "./gradlew build",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-gradle",
+        "redhat.java",
+        "ms-vscode.vscode-remote-extensionpack"
+      ],
+      "settings": {
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "gradle.nestedProjects": true
+      }
+    }
+  }
+}
